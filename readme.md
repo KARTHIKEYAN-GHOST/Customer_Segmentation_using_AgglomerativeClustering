@@ -1,62 +1,60 @@
-# Customer Segmentation using K-Means Clustering
+# Customer Segmentation — Current K-Means Implementation
 
-This project applies **K-Means clustering** to segment mall customers based on their **age** and **spending score**.  
-The objective is to demonstrate unsupervised learning, cluster selection using the elbow method, and visual interpretation of customer groups.
-
----
-
-## Objective
-
-To identify distinct customer segments using K-Means clustering for exploratory analysis and basic customer profiling.
-
----
+The repository name refers to Agglomerative Clustering, but the checked-in script `kmeans_clustering.py` imports and trains `sklearn.cluster.KMeans`. It does **not** currently implement Agglomerative Clustering. This README describes the code that is actually present.
 
 ## Dataset
 
-- **File:** `Mall_Customers.csv`
-- **Source:** Mall customer demographic and spending data
+`Mall_Customers.csv` contains the following columns:
 
-### Features Used
-- Age  
-- Spending_Score  
+- `CustomerID`
+- `Genre`
+- `Age`
+- `Annual_Income_(k$)`
+- `Spending_Score`
 
-The `Genre` column is numerically encoded but not used for clustering.
+The current script maps `Genre` to numeric values, but the clustering input uses only `Age` and `Spending_Score`.
 
----
+## Implementation
 
-## Workflow
+The script:
 
-1. Load and inspect dataset
-2. Encode categorical values
-3. Select features for clustering
-4. Apply the elbow method to determine optimal number of clusters
-5. Train K-Means model
-6. Visualize customer clusters and centroids
+1. Loads the customer dataset with pandas.
+2. Inspects the dataframe.
+3. Encodes `Genre` as `Male = 1` and `Female = 0` (the encoded column is not used in the model).
+4. Uses `Age` and `Spending_Score` as the two clustering features.
+5. Fits K-Means models for cluster counts 1 through 10 and plots within-cluster sum of squares (WCSS) for the elbow method.
+6. Fits a five-cluster K-Means model and displays the cluster assignments and inertia.
+7. Plots the five clusters and their centroids.
 
----
+## Technology
 
-## Clustering Details
+- Python
+- pandas
+- NumPy
+- Matplotlib
+- scikit-learn
 
-- **Algorithm:** K-Means
-- **Initialization:** k-means++
-- **Optimal Clusters:** 5 (chosen using elbow method)
-- **Random State:** 42
+## Run locally
 
----
+```bash
+git clone https://github.com/KARTHIKEYAN-GHOST/Customer_Segmentation_using_AgglomerativeClustering.git
+cd Customer_Segmentation_using_AgglomerativeClustering
 
-## Visualization
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install pandas numpy matplotlib scikit-learn
+```
 
-### Elbow Method
-Plots Within-Cluster Sum of Squares (WCSS) against the number of clusters to identify the optimal value of *k*.
+The script currently reads `/content/Mall_Customers.csv`, a Google Colab path. Change it to `pd.read_csv("Mall_Customers.csv")` for local execution, then run:
 
-### Cluster Visualization
-Scatter plot of customer age vs spending score, colored by cluster, with cluster centroids highlighted.
+```bash
+python kmeans_clustering.py
+```
 
----
+## Output
 
-## How to Run
+The program displays an elbow-method chart and a two-dimensional scatter plot with five K-Means clusters and their centroids.
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+## Repository naming note
+
+If the intention is to demonstrate Agglomerative Clustering, replace the K-Means implementation with `sklearn.cluster.AgglomerativeClustering` and update the workflow and visualizations. Until then, the current project should be described as K-Means customer segmentation.
